@@ -1,6 +1,108 @@
-<html>
-  <head></head>
-  <body>
-    <h1>Hello GitHub – modifié sur GitHub</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Hello Github 🎉</title>
+<style>
+html, body {
+margin: 0;
+padding: 0;
+overflow: hidden;
+background: #f5f5f5;
+font-family: Arial, sans-serif;
+}
+
+h1 {
+position: absolute;
+top: 40px;
+width: 100%;
+text-align: center;
+font-size: 3rem;
+}
+
+p {
+position: absolute;
+top: 110px;
+width: 100%;
+text-align: center;
+font-size: 1.2rem;
+}
+
+canvas {
+display: block;
+}
+</style>
+</head>
+<body>
+
+<h1>Hello Github 👋</h1>
+<p>Bienvenue sur cette magnifique page.</p>
+
+<canvas id="confetti"></canvas>
+
+<script>
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const colors = ["#ff3b3b", "#ffcc00", "#4caf50", "#2196f3", "#9c27b0"];
+const confettis = [];
+
+function createConfetti(x, y) {
+for (let i = 0; i < 300; i++) {
+confettis.push({
+x,
+y,
+r: Math.random() * 6 + 2,
+color: colors[Math.floor(Math.random() * colors.length)],
+vx: (Math.random() - 0.5) * 12,
+vy: (Math.random() - 0.5) * 12,
+gravity: 0.15,
+opacity: 1
+});
+}
+}
+
+function drawConfetti() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+confettis.forEach((c, index) => {
+c.vy += c.gravity;
+c.x += c.vx;
+c.y += c.vy;
+c.opacity -= 0.005;
+
+ctx.globalAlpha = c.opacity;
+ctx.beginPath();
+ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+ctx.fillStyle = c.color;
+ctx.fill();
+
+if (c.opacity <= 0) {
+confettis.splice(index, 1);
+}
+});
+
+ctx.globalAlpha = 1;
+requestAnimationFrame(drawConfetti);
+}
+
+// Explosion au chargement
+createConfetti(canvas.width / 2, canvas.height / 2);
+drawConfetti();
+
+// Explosion au clic
+window.addEventListener("click", (e) => {
+createConfetti(e.clientX, e.clientY);
+});
+
+window.addEventListener("resize", () => {
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
 </html>
